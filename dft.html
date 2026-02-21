@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+        .animate-math { animation: pulse-ring 3s infinite ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-10 border-b border-slate-700 pb-5">
+            <h1 class="text-4xl font-bold text-cyan-400">Discrete Fourier Transform</h1>
+            <p class="text-slate-400 mt-2">Transforming $x_n = [1, 1, -1, -1]$ step-by-step.</p>
+        </header>
+
+        <div class="bg-slate-800 p-6 rounded-xl shadow-xl mb-8 animate-math border-l-4 border-cyan-500">
+            <p class="text-sm text-cyan-300 uppercase tracking-widest mb-2">Current Calculation</p>
+            <div class="text-2xl" id="formula-display">
+                $$X_k = \sum_{n=0}^{N-1} x_n e^{-i\frac{2\pi}{N}kn}$$
+            </div>
+        </div>
+
+        <div id="results" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            </div>
+    </div>
+
+    <script>
+        const signal = [1, 1, -1, -1];
+        const N = signal.length;
+        const resultsContainer = document.getElementById('results');
+
+        function calculateDFT() {
+            for (let k = 0; k < N; k++) {
+                let re = 0;
+                let im = 0;
+
+                for (let n = 0; n < N; n++) {
+                    let angle = (2 * Math.PI * k * n) / N;
+                    re += signal[n] * Math.cos(angle);
+                    im -= signal[n] * Math.sin(angle);
+                }
+
+                const magnitude = Math.sqrt(re*re + im*im).toFixed(2);
+                
+                // Create Card with Tailwind
+                const card = document.createElement('div');
+                card.className = "bg-slate-800 border border-slate-700 p-5 rounded-lg transform transition hover:scale-105 duration-300 opacity-0 translate-y-4";
+                card.style.animation = `fadeInUp 0.5s ease forwards ${k * 0.2}s`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-cyan-400 font-mono font-bold text-xl">Bin X(${k})</span>
+                        <span class="bg-cyan-900 text-cyan-200 px-2 py-1 rounded text-xs font-bold">Mag: ${magnitude}</span>
+                    </div>
+                    <div class="text-slate-300 text-sm">
+                        <p>Real: <span class="text-white">${re.toFixed(2)}</span></p>
+                        <p>Imag: <span class="text-white">${im.toFixed(2)}j</span></p>
+                    </div>
+                    <div class="mt-4 h-1 w-full bg-slate-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyan-500" style="width: ${Math.min((magnitude/N)*100, 100)}%"></div>
+                    </div>
+                `;
+                resultsContainer.appendChild(card);
+            }
+        }
+
+        // Simple CSS Fade-in for the cards
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeInUp {
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        window.onload = calculateDFT;
+    </script>
+</body>
+</html>
