@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>DFT Theory: Synchronization & Convolution</title>
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #22d3ee, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .math-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500/30">
+
+    <div class="max-w-5xl mx-auto px-6 py-12">
+        <header class="text-center mb-16">
+            <h1 class="text-5xl font-extrabold mb-4 gradient-text">The Geometry of Fourier</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Understanding the Discrete Fourier Transform through 
+                <span class="text-cyan-400">Vibration Synchronization</span> and 
+                <span class="text-indigo-400">Convolution</span>.
+            </p>
+        </header>
+
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-10 w-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold border border-cyan-500/50">1</div>
+                <h2 class="text-2xl font-bold">The Synthesis Equation</h2>
+            </div>
+            
+            <div class="math-card p-8 rounded-2xl border border-slate-800 shadow-2xl mb-8">
+                <div class="text-3xl text-center py-4">
+                    $$X_k = \sum_{n=0}^{N-1} x_n \cdot \underbrace{e^{-i \frac{2\pi}{N} kn}}_{\text{The Probe}}$$
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-5 bg-slate-900/50 rounded-xl border border-slate-800">
+                    <h3 class="text-cyan-400 font-bold mb-2">$x_n$ (The Signal)</h3>
+                    <p class="text-sm text-slate-400 text-balance">Your raw data points. Think of this as the physical vibration or "sound" in the time domain.</p>
+                </div>
+                <div class="p-5 bg-slate-900/50 rounded-xl border border-slate-800">
+                    <h3 class="text-indigo-400 font-bold mb-2">$e^{-i \dots}$ (The Probe)</h3>
+                    <p class="text-sm text-slate-400">A "spinning circle" in the complex plane. It rotates at frequency $k$.</p>
+                </div>
+                <div class="p-5 bg-slate-900/50 rounded-xl border border-slate-800">
+                    <h3 class="text-emerald-400 font-bold mb-2">$\sum$ (The Integrator)</h3>
+                    <p class="text-sm text-slate-400">The process of summing acts like a filter. It cancels noise and keeps what "matches."</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-10 w-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold border border-indigo-500/50">2</div>
+                <h2 class="text-2xl font-bold">Vibration Synchronization</h2>
+            </div>
+
+            <div class="bg-indigo-950/20 border border-indigo-500/20 p-8 rounded-2xl">
+                <p class="mb-4">Imagine a "Winding Machine." You wrap your signal $x_n$ around a circle at different speeds.</p>
+                <ul class="space-y-4">
+                    <li class="flex gap-3">
+                        <span class="text-red-400">✗</span>
+                        <span><strong>Out of Sync:</strong> If the winding speed doesn't match the signal's frequency, the graph is evenly distributed around the origin. The "average" position (the sum) is **zero**.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-emerald-400">✓</span>
+                        <span><strong>In Sync:</strong> If the winding speed matches the signal, the graph becomes "lopsided" or weighted to one side. The "average" position jumps away from the origin, giving us a **Peak Magnitude**.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold border border-emerald-500/50">3</div>
+                <h2 class="text-2xl font-bold">The Convolution Link</h2>
+            </div>
+            
+            <div class="prose prose-invert max-w-none text-slate-400">
+                <p>The DFT is the key to the <strong>Convolution Theorem</strong>. Convolution in time is a "smearing" process (like a blur filter), but in the frequency domain, it is just simple multiplication.</p>
+                
+                <div class="my-8 p-6 bg-slate-900 rounded-lg border-l-4 border-emerald-500 italic">
+                    "To filter a signal, don't slide and sum (Convolution). Transform it, multiply it, and transform it back."
+                </div>
+
+                <p class="text-center text-xl text-slate-200">
+                    $$\mathcal{F}\{f * g\} = \mathcal{F}\{f\} \cdot \mathcal{F}\{g\}$$
+                </p>
+            </div>
+        </section>
+
+        <footer class="mt-20 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+            Theory built with MathJax & Tailwind • 2024 Fourier Guide
+        </footer>
+    </div>
+
+</body>
+</html>
